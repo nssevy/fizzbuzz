@@ -38,11 +38,9 @@ pub fn is_multiple_de_3(nbr: u32) -> bool {
 }
 
 pub fn is_multiple_de_5(nbr: u32) -> bool {
-
-    for tab in table_de_multiplication(5) {
-        if nbr == tab {
-            return true
-        }
+    let tab: Vec<u32> = converti_nbr_en_tab(nbr);
+    if tab[0] == 0 || tab[0] == 5 {
+        return true;
     }
 
     false
@@ -51,23 +49,13 @@ pub fn is_multiple_de_5(nbr: u32) -> bool {
 pub fn fizzbuzz(n: u32) -> String {
 
     let somme: u32 = add_elements_tab(&converti_nbr_en_tab(n));
-    let tuple: (bool, bool) = (is_multiple_de_3(somme), is_multiple_de_5(somme));
+    let tuple: (bool, bool) = (is_multiple_de_3(somme), is_multiple_de_5(n));
 
     match tuple {
         (true, false) => String::from("Fizz"), //si c'est un multiple de 3.
         (false, true) => String::from("Buzz"), //si c'est un multiple de 5.
         (true, true) => String::from("FizzBuzz"), //si c'est un multiple de 3 et 5.
         (false, false) => n.to_string(),
-    }
-
-}
-
-pub fn fizz(n: u32) -> String {
-    let somme: u32 = add_elements_tab(&converti_nbr_en_tab(n));
-
-    match is_multiple_de_3(somme) {
-        true => String::from("fizz"),
-        false => String::from("n'est pas un multiple de 3")
     }
 
 }
@@ -87,45 +75,42 @@ mod tests {
     */
 
     #[test]//14
-    fn check_fizzbuzz_884_renvoie_bien_la_string_buzz(){
-        let str: String = "Buzz".into();
+    fn check_78_n_est_pas_un_multiple_de_5(){
+        assert_eq!(is_multiple_de_5(78), false);
+    }
+
+    #[test] //13
+    fn check_14_n_est_pas_un_multiple_de_5() {
+        assert_eq!(is_multiple_de_5(14), false);
+    }
+
+    #[test] //12
+    fn check_15_est_bien_un_multiple_de_5() {
+        assert!(is_multiple_de_5(15));
+    }
+
+    #[test]//11
+    fn check_fizzbuzz_884_renvoie_bien_884(){
+        let str: String = "884".into();
         assert_eq!(str, fizzbuzz(884));
     }
 
-    #[test]//13
+    #[test]//10
     fn check_fizzbuzz_324_renvoie_bien_la_string_fizz(){
         let str: String = "Fizz".into();
         assert_eq!(str, fizzbuzz(324));
     }
 
-    #[test]//12
-    fn check_fizzbuzz_77_renvoie_bien_la_string_du_nombre_entre(){
-        let str: String = "77".into();
-        assert_eq!(str, fizzbuzz(77));
-    }
-
-    #[test]//11
-    fn check_fizzbuzz_78_renvoie_bien_la_string_fizzbuzz(){
-        let str: String = "FizzBuzz".into();
+    #[test]//9
+    fn check_fizzbuzz_78_renvoie_bien_fizz(){
+        let str: String = "Fizz".into();
         assert_eq!(str, fizzbuzz(78));
     }
 
-    #[test]//10
-    fn check_check_que_la_fn_tab_de_multiplication_de_5_renvoi_un_tab_de_mul_de_5(){
-        let tab_de_cinq: [u32; 10] = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
-        assert_eq!(table_de_multiplication(5), tab_de_cinq)
-    }
-
-    #[test]//9
+    #[test]//8
     fn check_que_la_fn_tab_de_multiplication_de_3_renvoi_un_tab_de_mul_de_3(){
         let tab_de_trois: [u32; 10] = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30];
         assert_eq!(table_de_multiplication(3), tab_de_trois)
-    }
-
-    #[test]//8
-    fn check_la_somme_de_1_2_3_est_un_multiple_de_3(){
-        let string: String = "fizz".into();
-        assert_eq!(string, fizz(123))
     }
 
     #[test]//7
