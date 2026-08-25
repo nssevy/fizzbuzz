@@ -14,42 +14,30 @@ pub fn converti_nbr_en_tab(n: u32) -> Vec<u32> {
     tableau_n
 } 
 
-pub fn add_elements_tab(tab: &[u32]) -> u32 {
-    tab.iter().sum()
-}
+pub fn is_multiple_of(nbr: u32) -> (bool, bool) {
 
-pub fn table_de_multiplication(chiffre: u32) -> [u32; 10] {
-    let mut tableau = [0; 10];
-    for (i, valeur) in tableau.iter_mut().enumerate() {
-        *valeur = ((i + 1) as u32) * chiffre;
-    }
-    tableau
-}
-
-pub fn is_multiple_de_3(nbr: u32) -> bool {
-
-    for tab in table_de_multiplication(3) {
-        if nbr == tab {
-            return true
-        }
+    if nbr == 0 {
+        return (true, true)
     }
 
-    false
-}
-
-pub fn is_multiple_de_5(nbr: u32) -> bool {
     let tab: Vec<u32> = converti_nbr_en_tab(nbr);
-    if tab[0] == 0 || tab[0] == 5 {
-        return true;
+    let mut multiple_de_5: bool = false;
+    let mut multiple_de_3: bool = false;
+
+    if nbr % 3 == 0 {
+         multiple_de_3 = true;
     }
 
-    false
+    if tab[0] == 0 || tab[0] == 5 {
+        multiple_de_5 = true;
+    }
+
+    (multiple_de_3, multiple_de_5)
 }
 
 pub fn fizzbuzz(n: u32) -> String {
 
-    let somme: u32 = add_elements_tab(&converti_nbr_en_tab(n));
-    let tuple: (bool, bool) = (is_multiple_de_3(somme), is_multiple_de_5(n));
+    let tuple: (bool, bool) = is_multiple_of(n);
 
     match tuple {
         (true, false) => String::from("Fizz"), //si c'est un multiple de 3.
@@ -64,76 +52,32 @@ pub fn fizzbuzz(n: u32) -> String {
 mod tests {
     use super::*;
 
-    /*Pour connaitre un multiple de 3, il faut que la somme des chiffres
-    * d'un nombre soit dans la tableau de 3. De meme pour 5.
-    */
-
-    /*
-    * Je dois faire une boucle qui compare un nbr avec tout les élements d'un
-    * tableau, si à la fin de la boucle mon nbr n'apparait pas dans tableau
-    * la boucle renvoi false.
-    */
-
-    #[test]//14
-    fn check_78_n_est_pas_un_multiple_de_5(){
-        assert_eq!(is_multiple_de_5(78), false);
+    #[test]//8
+    fn check_is_multiple_of_220_renvoie_bien_false_true(){
+        assert_eq!((false,true),is_multiple_of(220));
     }
 
-    #[test] //13
-    fn check_14_n_est_pas_un_multiple_de_5() {
-        assert_eq!(is_multiple_de_5(14), false);
+    #[test]//7
+    fn check_is_multiple_of_0_renvoie_bien_true_true(){
+        assert_eq!((true,true),is_multiple_of(0));
     }
 
-    #[test] //12
-    fn check_15_est_bien_un_multiple_de_5() {
-        assert!(is_multiple_de_5(15));
-    }
-
-    #[test]//11
+    #[test]//6
     fn check_fizzbuzz_884_renvoie_bien_884(){
         let str: String = "884".into();
         assert_eq!(str, fizzbuzz(884));
     }
 
-    #[test]//10
+    #[test]//5
     fn check_fizzbuzz_324_renvoie_bien_la_string_fizz(){
         let str: String = "Fizz".into();
         assert_eq!(str, fizzbuzz(324));
     }
 
-    #[test]//9
+    #[test]//4
     fn check_fizzbuzz_78_renvoie_bien_fizz(){
         let str: String = "Fizz".into();
         assert_eq!(str, fizzbuzz(78));
-    }
-
-    #[test]//8
-    fn check_que_la_fn_tab_de_multiplication_de_3_renvoi_un_tab_de_mul_de_3(){
-        let tab_de_trois: [u32; 10] = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30];
-        assert_eq!(table_de_multiplication(3), tab_de_trois)
-    }
-
-    #[test]//7
-    #[should_panic]
-    fn check_que_un_20_n_est_pas_un_multiple_de_3() {
-        assert!(is_multiple_de_3(20));
-    }
-
-    #[test]//6
-    fn check_que_un_21_est_un_multiple_de_3() {
-        assert!(is_multiple_de_3(21));
-    }
-
-    #[test]//5
-    fn check_que_la_somme_dun_tableau_4_est_egale_a_4() {
-        let vec: Vec<u32> = converti_nbr_en_tab(4); // <- un tableau.
-        assert_eq!(4, add_elements_tab(&vec))
-    }
-
-    #[test]//4
-    fn check_que_la_somme_dun_tableau_1_2_3_est_egale_a_6() {
-        let vec: Vec<u32> = converti_nbr_en_tab(123); // <- un tableau.
-        assert_eq!(6, add_elements_tab(&vec))
     }
 
     #[test]//3
