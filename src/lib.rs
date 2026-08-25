@@ -1,36 +1,8 @@
-pub fn converti_nbr_en_tab(n: u32) -> Vec<u32> {
-
-    let mut tableau_n = Vec::new();
-
-    const DIX: u32 = 10;
-
-    let mut nombre = n; //123
-
-    while nombre != 0 {
-        tableau_n.push(nombre % DIX);
-        nombre = nombre / DIX;
-    }
-
-    tableau_n
-} 
-
 pub fn is_multiple_of(nbr: u32) -> (bool, bool) {
 
-    if nbr == 0 {
-        return (true, true)
-    }
 
-    let tab: Vec<u32> = converti_nbr_en_tab(nbr);
-    let mut multiple_de_5: bool = false;
-    let mut multiple_de_3: bool = false;
-
-    if nbr % 3 == 0 {
-         multiple_de_3 = true;
-    }
-
-    if tab[0] == 0 || tab[0] == 5 {
-        multiple_de_5 = true;
-    }
+    let multiple_de_3 = nbr % 3 == 0;
+    let multiple_de_5 = nbr % 5 == 0;
 
     (multiple_de_3, multiple_de_5)
 }
@@ -51,6 +23,16 @@ pub fn fizzbuzz(n: u32) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]//9
+    fn check_15_is_renvoie_bien_fizzbuzz(){
+        assert_eq!(String::from("FizzBuzz"),fizzbuzz(15));
+    }
+
+    #[test]//9
+    fn check_235_is_renvoie_bien_buzz(){
+        assert_eq!(String::from("Buzz"),fizzbuzz(235));
+    }
 
     #[test]//8
     fn check_is_multiple_of_220_renvoie_bien_false_true(){
@@ -78,24 +60,6 @@ mod tests {
     fn check_fizzbuzz_78_renvoie_bien_fizz(){
         let str: String = "Fizz".into();
         assert_eq!(str, fizzbuzz(78));
-    }
-
-    #[test]//3
-    fn check_123_est_egale_a_un_tableau_de_3_2_1() {
-        let vec: Vec<u32> = vec![3,2,1]; 
-        assert_eq!(vec, converti_nbr_en_tab(123))
-    }
-
-    #[test]//2
-    fn check_12_est_egale_a_un_tableau_de_2_1() {
-        let vec: Vec<u32> = vec![2,1]; 
-        assert_eq!(vec, converti_nbr_en_tab(12))
-    }
-
-    #[test]//1
-    fn check_1_est_egale_a_un_tableau_de_1() {
-        let vec: Vec<u32> = vec![1]; 
-        assert_eq!(vec, converti_nbr_en_tab(1))
     }
 }
 
